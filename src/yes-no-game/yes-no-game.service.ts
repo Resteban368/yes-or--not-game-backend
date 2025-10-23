@@ -168,4 +168,29 @@ export class YesNoGameService {
 
     }
 
+
+    /**
+     * Elimina el historial de chat asociado a un gameId específico.
+     * Si la partida existe y se elimina, devuelve true.
+     * @param gameId El identificador único de la partida a eliminar.
+     * @returns Un objeto de confirmación.
+     */
+    resetGame(gameId: string): { success: boolean; message: string } {
+        // .delete() devuelve 'true' si el elemento existía y fue eliminado, 'false' si no existía.
+        const wasDeleted = this.chatHistory.delete(gameId);
+
+        if (wasDeleted) {
+            return {
+                success: true,
+                message: `El historial de la partida '${gameId}' ha sido eliminado.`,
+            };
+        } else {
+            // No es un error crítico (404), pero informamos al cliente.
+            return {
+                success: false,
+                message: `No se encontró la partida '${gameId}' para eliminar.`,
+            };
+        }
+    }
+
 }
