@@ -43,6 +43,8 @@ export class YesNoGameService {
         // Recupera el historial existente para este gameId, o inicia uno vacío.
         const history = this.chatHistory.get(gameId) || [];
 
+        const currentQuestionNumber = history.filter(msg => msg.role === 'model').length;
+
         // ------------------------------------------------
         // 4. INSTRUCCIONES DEL SISTEMA (System Prompt)
         // ------------------------------------------------
@@ -50,6 +52,7 @@ export class YesNoGameService {
         const SYSTEM_INSTRUCTIONS = `
 # Role:
   - Eres un ente que adivina el personaje de '${topic}' que el usuario está pensando.
+  - ESTÁS EN LA PREGUNTA NÚMERO ${currentQuestionNumber + 1}.
 
 # Reglas:
   - El usuario sólo puede responder con "si" o "no" o "no sé".
@@ -103,6 +106,7 @@ export class YesNoGameService {
                 // Retorna la primera pregunta al Controller.
                 return {
                     reply: response.text || '',
+                    questionNumber: 0, // Primera pregunta
                     history: history,
                 };
             }
@@ -133,6 +137,7 @@ export class YesNoGameService {
             return {
                 reply: response.text || '',
                 history: history,
+                questionNumber: currentQuestionNumber + 1, // La pregunta actual + 1 (la recién generada)
             };
 
         } catch (error) {
