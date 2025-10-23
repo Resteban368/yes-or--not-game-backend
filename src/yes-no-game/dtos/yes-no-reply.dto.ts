@@ -9,7 +9,7 @@ export class YesNoReplyDto {
   @IsNotEmpty() // Asegura que el valor no sea una cadena vacía.
   
   // 💡 Novedad: Garantiza que la respuesta sea uno de los valores válidos.
-  @IsIn(['si', 'no', 'no sé', 'no se']) 
+  @IsIn(['si', 'no', 'no sé', 'no se', 'SI', 'NO', 'NO SÉ', 'NO SE', 'Si', 'No', 'No Sé', 'No se']) 
   reply: string;
 
   // ------------------------------------------------
